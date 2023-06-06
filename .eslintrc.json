@@ -10,6 +10,11 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "quotes": ["error", "double"]
+    "quotes": ["error", "double"],
+    "comma-dangle": "off",
+    "arrow-body-style": "off",
+    "consistent-return": "off",
+    "no-underscore-dangle": "off",
+    "object-curly-newline": "off"
   }
 }

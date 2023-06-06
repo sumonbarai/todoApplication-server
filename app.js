@@ -1,9 +1,7 @@
 // basic lib import
 const express = require("express");
-// const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
-// const bcrypt = require("bcrypt");
 require("dotenv").config();
 
 const app = express();
@@ -14,6 +12,9 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const hpp = require("hpp");
 const xssClean = require("xss-clean");
+
+// module export
+const router = require("./src/router/api");
 
 // public folder
 app.use(express.static("/public"));
@@ -41,7 +42,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: false }));
 // mongoDB connection
 const uri = process.env.MONGODB_URI;
 mongoose
-  .connect(uri)
+  .connect(uri, { autoIndex: true })
   .then(() => {
     // eslint-disable-next-line no-console
     console.log("mongoDb is successfully connected");
@@ -52,9 +53,7 @@ mongoose
   });
 
 // routing setup
-app.get("/", (req, res) => {
-  res.send("this is home page");
-});
+app.use("/api/v1", router);
 
 // 404 route
 app.use("*", (req, res) => {
