@@ -1,5 +1,6 @@
 const express = require("express");
 const userController = require("../controllers/userController");
+const todoController = require("../controllers/todoController");
 const status = require("../controllers/statusController");
 const { tokenVerify } = require("../middlewares/tokenVerify");
 
@@ -13,5 +14,11 @@ router.post("/login", userController.login);
 
 router.get("/selectProfile", tokenVerify, userController.selectProfile);
 router.post("/updateProfile", tokenVerify, userController.updateProfile);
+
+// todo route
+router.post("/createTodo", tokenVerify, todoController.createTodo);
+router.get("/getTodo", tokenVerify, todoController.getTodo);
+router.put("/updateTodo/:id", tokenVerify, todoController.updateTodo);
+router.delete("/deleteTodo/:id", tokenVerify, todoController.deleteTodo);
 
 module.exports = router;

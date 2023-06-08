@@ -30,7 +30,7 @@ const mongooseErrorHandle = (error, res) => {
   } else {
     res.status(500).json({
       status: "fail",
-      message: mongooseErrorMessage.message,
+      message: mongooseErrorMessage,
     });
   }
 };

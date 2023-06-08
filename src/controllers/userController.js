@@ -68,14 +68,6 @@ module.exports.selectProfile = async (req, res) => {
   try {
     const { userId } = req.headers;
     const result = await UserModel.findById(userId, { password: 0 });
-
-    console.log(result);
-    console.log(typeof result);
-    console.log({ ...result });
-    console.log(result instanceof Object);
-
-    result.age = 100;
-
     return res.json({
       status: "success",
       data: result,
@@ -90,24 +82,20 @@ module.exports.selectProfile = async (req, res) => {
 
 module.exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.decodedId;
+    const { userId } = req.headers;
 
-    const { id } = req.params;
     const updateData = req.body;
 
-    if (!(userId === id)) {
-      return res.status(400).json({
-        status: "fail",
-        message: "invalid token",
-      });
+    if ("name" in updateData) {
+      throw new Error("You are not allowed to update user name");
     }
 
-    const result = await UserModel.findByIdAndUpdate(id, updateData, {
+    const result = await UserModel.findByIdAndUpdate(userId, updateData, {
       new: true,
       runValidators: true,
+      select: { password: 0 },
     });
 
-    delete result.password;
     res.json({
       status: "success",
       data: result,
