@@ -42,7 +42,7 @@ module.exports.updateTodo = async (req, res) => {
     if ("userName" in updateData) {
       throw new Error("You are not allowed to update userName");
     }
-    const result = await TodoModel.updateOne(
+    const result = await TodoModel.findOneAndUpdate(
       { userName, _id: id },
       updateData,
       {
@@ -50,6 +50,7 @@ module.exports.updateTodo = async (req, res) => {
         runValidators: true,
       }
     );
+    if (!result) return res.status(400).send("update failed");
     res.status(200).json({
       status: "update success",
       data: result,
@@ -90,7 +91,7 @@ module.exports.updateTodoStatus = async (req, res) => {
       });
     }
 
-    const result = await TodoModel.updateOne(
+    const result = await TodoModel.findOneAndUpdate(
       { userName, _id: id },
       { status },
       {
@@ -98,6 +99,7 @@ module.exports.updateTodoStatus = async (req, res) => {
         runValidators: true,
       }
     );
+    if (!result) return res.status(400).send("status update failed");
     res.status(200).json({
       status: "status update success",
       data: result,
